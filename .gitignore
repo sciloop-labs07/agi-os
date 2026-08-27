@@ -24,8 +24,8 @@ __pycache__/
 *.py[cod]
 
 # Local Codex/plugin development metadata
-.agents/
-plugins/
+/.agents/
+/plugins/
 
 # OS/editor noise
 .DS_Store
