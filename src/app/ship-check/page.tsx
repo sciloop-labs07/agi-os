@@ -1,0 +1,8 @@
+import { ArrowRight, CheckCircle2, FileSearch, ShieldAlert } from "lucide-react";
+import { AppShell } from "@/components/app-shell";
+import { ShipCheckConsole } from "@/components/ship-check-console";
+import { Kicker } from "@/components/ui/panel";
+
+export default function ShipCheckPage() {
+  return <AppShell active="/ship-check"><section className="relative overflow-hidden rounded-xl border border-cyan-signal/25 bg-[linear-gradient(135deg,#07111c,#0b1d2c_52%,#20101b)] p-6 shadow-[var(--shadow)] sm:p-10"><Kicker>AI SHIP CHECK · CONTROLLED-FIXTURE PROTOTYPE</Kicker><h1 className="mt-4 max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-6xl">Crash-test an AI workflow before your customers do.</h1><p className="mt-5 max-w-3xl text-base leading-7 text-slate-300">Run explicit tests against included controlled fixtures, trace failures to evidence, reproduce what happened, and turn the result into a fixable engineering task. This milestone does not connect to or certify a buyer&apos;s production system.</p><div className="mt-7 flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.16em] text-slate-400"><span className="flex items-center gap-2"><FileSearch className="size-4 text-cyan-signal" /> evidence first</span><ArrowRight className="size-4 text-slate-500" /><span className="flex items-center gap-2"><ShieldAlert className="size-4 text-rose-signal" /> controlled attack paths</span><ArrowRight className="size-4 text-slate-500" /><span className="flex items-center gap-2"><CheckCircle2 className="size-4 text-lime-signal" /> reproducible checks</span></div></section><section className="mt-8"><ShipCheckConsole /></section></AppShell>;
+}

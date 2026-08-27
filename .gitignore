@@ -1,0 +1,32 @@
+# Dependencies and build output
+node_modules/
+.next/
+.next-*/
+tsconfig.tsbuildinfo
+
+# Local secrets and provider state
+.env
+.env.*
+!.env.example
+.vercel/
+.wrangler/
+
+# Local databases, generated evidence, and logs
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+maths_ai_ecosystem/logs/
+output/
+*.log
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Local Codex/plugin development metadata
+.agents/
+plugins/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db

@@ -1,0 +1,21 @@
+runtime:
+  max_agents: 20
+  initial_agents: 8
+  ticks: 12
+  random_seed: 42
+  max_recursion_depth: 4
+resources:
+  energy_budget_per_tick: 100.0
+  memory_budget_per_tick: 200.0
+  min_survival_fitness: 0.25
+pressures:
+  correctness: 0.35
+  compression: 0.25
+  novelty: 0.18
+  entropy: 0.12
+memory:
+  database_path: maths_ai_ecosystem/data/ecosystem.sqlite
+  max_memory_items: 2000
+visualization:
+  dashboard_path: maths_ai_ecosystem/logs/dashboard.html
+  snapshot_path: maths_ai_ecosystem/logs/dashboard_snapshot.json

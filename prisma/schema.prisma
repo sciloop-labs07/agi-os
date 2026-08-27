@@ -1,0 +1,601 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  name         String?
+  passwordHash String
+  role         UserRole       @default(RESEARCHER)
+  notes        ResearchNote[]
+  experiments  Experiment[]
+  personalEvents PersonalEvent[]
+  personalProjections PersonalProjection[]
+  personalEntities PersonalEntity[]
+  personalAIMemories PersonalAIMemory[]
+  personalSensors PersonalSensor[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model PersonalEvent {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String
+  source        String
+  timestamp     DateTime
+  localDate     String
+  timezone      String
+  module        String
+  entityType    String?
+  entityId      String?
+  payload       Json
+  metadata      Json
+  correlationId String?
+  causationId   String?
+  version       Int      @default(1)
+  createdAt     DateTime @default(now())
+
+  @@index([userId, timestamp])
+  @@index([userId, type])
+  @@index([userId, module])
+  @@index([correlationId])
+}
+
+model PersonalProjection {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  scope       String
+  date        String?
+  data        Json
+  eventCursor String
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, name, scope, date])
+  @@index([userId, name])
+}
+
+model PersonalEntity {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type               String
+  status             String
+  name               String?
+  data               Json
+  createdFromEventId String
+  updatedFromEventId String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([userId, type])
+  @@index([userId, status])
+}
+
+model PersonalAIMemory {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memoryType     String
+  content        String
+  embedding      Json?
+  sourceEventIds String[]
+  confidence     Int
+  importance     Int
+  expiresAt      DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@index([userId, memoryType])
+  @@index([userId, importance])
+}
+
+model PersonalPlugin {
+  id          String   @id
+  userId      String?
+  name        String
+  module      String
+  enabled     Boolean  @default(true)
+  manifest    Json
+  permissions Json
+  createdAt   DateTime @default(now())
+
+  @@index([userId, module])
+}
+
+model PersonalSensor {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         String
+  provider     String
+  status       String
+  config       Json
+  lastSyncedAt DateTime?
+
+  @@index([userId, type])
+  @@index([userId, status])
+}
+
+model FounderNetworkEvent {
+  id                String   @id
+  platform          String
+  connectorMode     String
+  type              String
+  title             String
+  summary           String
+  url               String
+  occurredAt        DateTime
+  ingestedAt        DateTime @default(now())
+  tags              String[]
+  rawRef            String?
+  sourceReliability Int
+  payload           Json
+
+  @@index([platform])
+  @@index([type])
+  @@index([occurredAt])
+}
+
+model FounderGraphNode {
+  id        String   @id
+  type      String
+  label     String
+  platform  String?
+  url       String?
+  metadata  Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  outgoing FounderGraphEdge[] @relation("FounderGraphSource")
+  incoming FounderGraphEdge[] @relation("FounderGraphTarget")
+
+  @@index([type])
+  @@index([platform])
+}
+
+model FounderGraphEdge {
+  id               String   @id
+  sourceId         String
+  targetId         String
+  relation         String
+  weight           Int
+  evidenceEventIds String[]
+  createdAt        DateTime @default(now())
+
+  source FounderGraphNode @relation("FounderGraphSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target FounderGraphNode @relation("FounderGraphTarget", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@index([sourceId])
+  @@index([targetId])
+  @@index([relation])
+}
+
+model FounderConnectorState {
+  id            String   @id
+  platform      String   @unique
+  status        String
+  cursor        String?
+  config        Json
+  lastSyncedAt  DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model FounderAgentRun {
+  id              String   @id @default(cuid())
+  agent           String
+  eventId         String
+  urgency         Int
+  importance      Int
+  reason          String
+  nextActions     String[]
+  notify          Boolean
+  notificationRule String
+  createdAt       DateTime @default(now())
+
+  @@index([agent])
+  @@index([eventId])
+  @@index([urgency])
+}
+
+model AIParadigm {
+  id                      String                    @id @default(cuid())
+  slug                    String                    @unique
+  name                    String
+  summary                 String
+  horizon                 String
+  maturity                Int
+  agiPotential            Int
+  energyEfficiency        Int
+  scalability             Int
+  safetyComplexity        Int
+  economicFeasibility     Int
+  principles              Principle[]
+  mechanisms              Mechanism[]
+  equations               Equation[]
+  advantages              Advantage[]
+  disadvantages           Disadvantage[]
+  bottlenecks             Bottleneck[]
+  opportunities           InnovationOpportunity[]
+  papers                  ResearchPaper[]
+  dependencies            TechnologyDependency[]
+  predictions             FuturePrediction[]
+  companies               Company[]
+  scientists              Scientist[]
+  notes                   ResearchNote[]
+  experiments             Experiment[]
+  frontierItems           FrontierResearchItem[]
+  bottleneckSignals       AGIBottleneckSignal[]
+  hybridArchitectures     HybridArchitectureParadigm[]
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+}
+
+model Principle {
+  id          String     @id @default(cuid())
+  title       String
+  body        String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model Mechanism {
+  id          String     @id @default(cuid())
+  step        Int
+  title       String
+  body        String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model Equation {
+  id          String     @id @default(cuid())
+  label       String
+  expression  String
+  explanation String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model Advantage {
+  id          String     @id @default(cuid())
+  title       String
+  body        String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model Disadvantage {
+  id          String     @id @default(cuid())
+  title       String
+  body        String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model Bottleneck {
+  id          String     @id @default(cuid())
+  title       String
+  severity    Int
+  body        String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model InnovationOpportunity {
+  id          String     @id @default(cuid())
+  title       String
+  leverage    Int
+  body        String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model ResearchPaper {
+  id          String     @id @default(cuid())
+  title       String
+  url         String?
+  year        Int?
+  insight     String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model ResearchNote {
+  id          String      @id @default(cuid())
+  title       String
+  markdown    String
+  tags        String[]
+  paradigmId  String?
+  paradigm    AIParadigm? @relation(fields: [paradigmId], references: [id], onDelete: SetNull)
+  authorId    String?
+  author      User?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Experiment {
+  id          String           @id @default(cuid())
+  title       String
+  status      ExperimentStatus @default(PLANNED)
+  hypothesis  String
+  protocol    String
+  result      String?
+  paradigmId  String?
+  paradigm    AIParadigm?      @relation(fields: [paradigmId], references: [id], onDelete: SetNull)
+  ownerId     String?
+  owner       User?            @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model TechnologyDependency {
+  id          String     @id @default(cuid())
+  name        String
+  relation    String
+  readiness   Int
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model FuturePrediction {
+  id          String     @id @default(cuid())
+  year        Int
+  confidence  Int
+  statement   String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model Company {
+  id          String     @id @default(cuid())
+  name        String
+  focus       String
+  url         String?
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model Scientist {
+  id          String     @id @default(cuid())
+  name        String
+  focus       String
+  paradigmId  String
+  paradigm    AIParadigm @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+}
+
+model ConceptNode {
+  id          String            @id @default(cuid())
+  key         String            @unique
+  label       String
+  type        ConceptNodeType
+  description String
+  outgoing    ConceptRelation[] @relation("RelationSource")
+  incoming    ConceptRelation[] @relation("RelationTarget")
+}
+
+model ConceptRelation {
+  id        String      @id @default(cuid())
+  sourceId  String
+  targetId  String
+  relation  RelationKind
+  weight    Int         @default(50)
+  source    ConceptNode @relation("RelationSource", fields: [sourceId], references: [id], onDelete: Cascade)
+  target    ConceptNode @relation("RelationTarget", fields: [targetId], references: [id], onDelete: Cascade)
+}
+
+model IntelligenceSource {
+  id              String                 @id @default(cuid())
+  key             String                 @unique
+  name            String
+  kind            FrontierSourceKind
+  url             String
+  cadence         MonitorCadence
+  monitorStrategy MonitorStrategy
+  focus           String[]
+  lastCheckedAt   DateTime?
+  items           FrontierResearchItem[]
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+}
+
+model FrontierResearchItem {
+  id                         String             @id @default(cuid())
+  externalId                 String?
+  title                      String
+  url                        String
+  publishedAt                DateTime?
+  sourceId                   String
+  source                     IntelligenceSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  paradigms                  AIParadigm[]
+  claims                     String[]
+  mechanisms                 String[]
+  bottlenecks                String[]
+  contradictions             String[]
+  convergenceSignals         String[]
+  innovationOpportunities    String[]
+  importance                 Int
+  status                     ValidationStatus
+  evidenceStrength           Int
+  reproducibilityLikelihood  Int
+  hypeScore                  Int
+  experimentalValidation     Int
+  engineeringFeasibility     Int
+  thermodynamicFeasibility   Int
+  scalabilityFeasibility     Int
+  timelineRealism            Int
+  createdAt                  DateTime           @default(now())
+  updatedAt                  DateTime           @updatedAt
+}
+
+model AGIBottleneckSignal {
+  id                  String             @id @default(cuid())
+  category            BottleneckCategory
+  title               String
+  severity            Int
+  trend               BottleneckTrend
+  affectedParadigms   AIParadigm[]
+  evidence            String[]
+  possibleResolutions String[]
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+}
+
+model HybridArchitecture {
+  id                      String                       @id @default(cuid())
+  key                     String                       @unique
+  name                    String
+  components              String[]
+  thesis                  String
+  strengths               String[]
+  weaknesses              String[]
+  requiredBreakthroughs   String[]
+  estimatedTimeline       String
+  civilizationImpact      String
+  paradigms               HybridArchitectureParadigm[]
+  validations             PhysicsValidation[]
+  evidenceStrength        Int
+  reproducibilityLikelihood Int
+  hypeScore               Int
+  experimentalValidation  Int
+  engineeringFeasibility  Int
+  thermodynamicFeasibility Int
+  scalabilityFeasibility  Int
+  timelineRealism         Int
+  createdAt               DateTime                     @default(now())
+  updatedAt               DateTime                     @updatedAt
+}
+
+model HybridArchitectureParadigm {
+  id             String             @id @default(cuid())
+  architectureId String
+  paradigmId     String
+  architecture   HybridArchitecture @relation(fields: [architectureId], references: [id], onDelete: Cascade)
+  paradigm       AIParadigm         @relation(fields: [paradigmId], references: [id], onDelete: Cascade)
+
+  @@unique([architectureId, paradigmId])
+}
+
+model PhysicsValidation {
+  id                      String                @id @default(cuid())
+  architectureId          String
+  architecture            HybridArchitecture    @relation(fields: [architectureId], references: [id], onDelete: Cascade)
+  verdict                 PhysicsVerdict
+  thermodynamics          Int
+  informationTheory       Int
+  memoryBandwidth         Int
+  energyEfficiency        Int
+  fabricationFeasibility  Int
+  communicationLatency    Int
+  scalingLimits           Int
+  notes                   String[]
+  createdAt               DateTime              @default(now())
+}
+
+model IdeaMutation {
+  id                        String   @id @default(cuid())
+  key                       String   @unique
+  seedIdeas                 String[]
+  mutatedHypothesis         String
+  unexploredIntersection    String
+  testPathway               String[]
+  expectedBreakthroughIfTrue String
+  risk                      String
+  createdAt                 DateTime @default(now())
+}
+
+enum UserRole {
+  ADMIN
+  RESEARCHER
+  VIEWER
+}
+
+enum ExperimentStatus {
+  PLANNED
+  RUNNING
+  BLOCKED
+  COMPLETE
+}
+
+enum ConceptNodeType {
+  PARADIGM
+  CONCEPT
+  EQUATION
+  HARDWARE
+  BOTTLENECK
+  COMPANY
+  OPPORTUNITY
+}
+
+enum RelationKind {
+  ENABLES
+  CONSTRAINS
+  DEPENDS_ON
+  CAUSES
+  COMPETES_WITH
+  CONVERGES_WITH
+}
+
+enum FrontierSourceKind {
+  PAPER
+  CODE
+  MODEL
+  LAB
+  NEWS
+  PATENT
+  FUNDING
+  BENCHMARK
+}
+
+enum MonitorCadence {
+  HOURLY
+  DAILY
+  WEEKLY
+}
+
+enum MonitorStrategy {
+  RSS
+  API
+  WEB
+  MANUAL
+}
+
+enum ValidationStatus {
+  THEORETICAL
+  SIMULATED
+  EXPERIMENTALLY_DEMONSTRATED
+  COMMERCIALIZING
+}
+
+enum BottleneckCategory {
+  COMPUTE
+  MEMORY
+  ENERGY
+  BANDWIDTH
+  TRAINING
+  EMBODIMENT
+  SCALING_LAWS
+  FABRICATION
+}
+
+enum BottleneckTrend {
+  WORSENING
+  STABLE
+  IMPROVING
+}
+
+enum PhysicsVerdict {
+  THEORETICALLY_POSSIBLE
+  EXPERIMENTALLY_DEMONSTRATED
+  ECONOMICALLY_SCALABLE
+  PHYSICALLY_UNREALISTIC
+}

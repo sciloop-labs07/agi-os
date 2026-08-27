@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: agi-os
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PYTHON
+        value: python3
+      - key: MATHS_AI_DATABASE_PATH
+        value: /tmp/verified_experiments.sqlite
+      - key: DATA_MODE
+        value: read-only-demo
+      - key: JWT_SECRET
+        generateValue: true

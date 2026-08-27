@@ -1,0 +1,8 @@
+import { MessageSquareText, Target, Telescope } from "lucide-react";
+import { AppShell } from "@/components/app-shell";
+import { FeedbackForm } from "@/components/feedback-form";
+import { Kicker, Panel } from "@/components/ui/panel";
+
+export default function FeedbackPage() {
+  return <AppShell active="/feedback"><Kicker>Research signal</Kicker><h1 className="mt-3 text-3xl font-semibold text-white">Help shape the intelligence layer</h1><p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">AGI OS improves through evidence. Tell us where the platform made your thinking clearer, where it added friction, and what deserves to exist next.</p><div className="mt-8 grid gap-6 xl:grid-cols-[1fr_340px]"><FeedbackForm /><div className="space-y-4"><Panel><MessageSquareText className="size-5 text-cyan-signal" /><h2 className="mt-4 text-lg font-semibold text-white">One useful signal beats a vague vote</h2><p className="mt-2 text-sm leading-6 text-slate-400">Specific moments help us improve the reasoning experience, not just the surface.</p></Panel><Panel className="space-y-5"><div className="flex gap-3"><Target className="mt-1 size-4 shrink-0 text-lime-signal" /><div><b className="text-sm text-white">Product clarity</b><p className="mt-1 text-xs leading-5 text-slate-400">Was the next action obvious?</p></div></div><div className="flex gap-3"><Telescope className="mt-1 size-4 shrink-0 text-rose-signal" /><div><b className="text-sm text-white">Research value</b><p className="mt-1 text-xs leading-5 text-slate-400">Did it help you see a system differently?</p></div></div></Panel></div></div></AppShell>;
+}

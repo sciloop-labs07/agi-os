@@ -1,0 +1,2 @@
+# Runtime dependency used by the verified Maths AI API route.
+sympy>=1.13,<2

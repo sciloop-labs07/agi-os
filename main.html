@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open AGI Research OS</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --cyan: #48e5ff;
+        --lime: #b6ff61;
+        --rose: #ff5f8f;
+        --bg: #040812;
+        --panel: rgba(8, 18, 31, 0.78);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at 15% 15%, rgba(72, 229, 255, 0.18), transparent 28%),
+          radial-gradient(circle at 85% 20%, rgba(182, 255, 97, 0.12), transparent 26%),
+          linear-gradient(180deg, #040812, #07111c 50%, #05070d);
+        color: #e5f7ff;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(72, 229, 255, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(72, 229, 255, 0.06) 1px, transparent 1px);
+        background-size: 42px 42px;
+        mask-image: linear-gradient(to bottom, black, transparent 84%);
+        pointer-events: none;
+      }
+
+      main {
+        width: min(960px, calc(100vw - 32px));
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        background: var(--panel);
+        box-shadow: 0 0 70px rgba(72, 229, 255, 0.16);
+        padding: 36px;
+        backdrop-filter: blur(18px);
+      }
+
+      .kicker {
+        color: var(--cyan);
+        font: 700 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 0;
+        max-width: 760px;
+        font-size: clamp(38px, 6vw, 76px);
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      p {
+        max-width: 720px;
+        color: #b8c7d9;
+        font-size: 17px;
+        line-height: 1.7;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      a,
+      button {
+        appearance: none;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .primary {
+        background: var(--cyan);
+        color: #031018;
+      }
+
+      .secondary {
+        border: 1px solid rgba(72, 229, 255, 0.35);
+        background: rgba(72, 229, 255, 0.08);
+        color: var(--cyan);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 34px;
+      }
+
+      .cell {
+        min-height: 112px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 14px;
+      }
+
+      .cell strong {
+        display: block;
+        color: #fff;
+        font-size: 14px;
+      }
+
+      .cell span {
+        display: block;
+        margin-top: 8px;
+        color: #91a3b8;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      code {
+        color: var(--lime);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 24px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="kicker">AGI Research OS launcher</div>
+      <h1>Open the unified frontier intelligence platform.</h1>
+      <p>
+        Start the app with <code>npm run dev -- -p 3003</code>, then open the command center in Chrome.
+        For one-click startup on Windows, use <code>OPEN_IN_CHROME.bat</code>.
+      </p>
+      <div class="actions">
+        <a class="primary" href="http://localhost:3003">Open main platform</a>
+        <a class="secondary" href="http://localhost:3003/imagination">Open imagination engine</a>
+        <a class="secondary" href="http://localhost:3003/shadow-field-theory">Open shadow field lab</a>
+        <a class="secondary" href="http://localhost:3003/negative-trace-intelligence">Open NTI lab</a>
+        <a class="secondary" href="http://localhost:3003/frontier">Open frontier intelligence</a>
+      </div>
+      <section class="grid" aria-label="Connected platform modules">
+        <div class="cell"><strong>Frontier</strong><span>Live research ingestion and credibility scoring.</span></div>
+        <div class="cell"><strong>Emergence</strong><span>Interactive AGI to ASI causal map.</span></div>
+        <div class="cell"><strong>AI Maps</strong><span>One emergence flow for each AI paradigm.</span></div>
+        <div class="cell"><strong>Maths AI</strong><span>Self-evolving local cognitive civilization.</span></div>
+        <div class="cell"><strong>Imagine</strong><span>Possible-world search, counterfactuals, hypotheses, and tests.</span></div>
+        <div class="cell"><strong>Shadow Field</strong><span>Hidden traces from expected versus actual reality.</span></div>
+        <div class="cell"><strong>NTI Lab</strong><span>Negative Trace Intelligence learns from what did not happen.</span></div>
+        <div class="cell"><strong>Paradigms</strong><span>15 AI architecture portals.</span></div>
+        <div class="cell"><strong>Graph</strong><span>Causal knowledge relationships.</span></div>
+        <div class="cell"><strong>Compare</strong><span>Capability and feasibility matrices.</span></div>
+        <div class="cell"><strong>Workspace</strong><span>Notes, hypotheses, and experiments.</span></div>
+        <div class="cell"><strong>Roadmap</strong><span>AGI execution planning.</span></div>
+        <div class="cell"><strong>Simulation</strong><span>Future bottleneck scenarios.</span></div>
+        <div class="cell"><strong>System</strong><span>Architecture and deployment blueprint.</span></div>
+      </section>
+    </main>
+  </body>
+</html>
