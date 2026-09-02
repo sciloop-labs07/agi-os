@@ -13,7 +13,7 @@ const child = spawn(process.execPath, [nextBin, command, ...process.argv.slice(3
   stdio: "inherit",
   env: {
     ...process.env,
-    NEXT_DIST_DIR: process.env.NEXT_DIST_DIR ?? ".next-build"
+    NEXT_DIST_DIR: process.env.NEXT_DIST_DIR ?? (process.env.VERCEL ? ".next" : ".next-build")
   }
 });
 
