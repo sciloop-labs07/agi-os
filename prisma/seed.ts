@@ -100,7 +100,7 @@ async function main() {
         url: item.url,
         publishedAt: new Date(item.publishedAt),
         sourceId: source.id,
-        paradigms: { connect: connectedParadigms.map((paradigm) => ({ id: paradigm.id })) },
+        paradigms: { connect: connectedParadigms.map((paradigm: { id: string }) => ({ id: paradigm.id })) },
         claims: item.claims,
         mechanisms: item.mechanisms,
         bottlenecks: item.bottlenecks,
@@ -129,7 +129,7 @@ async function main() {
         title: bottleneck.title,
         severity: bottleneck.severity,
         trend: bottleneck.trend.toUpperCase() as never,
-        affectedParadigms: { connect: connectedParadigms.map((paradigm) => ({ id: paradigm.id })) },
+        affectedParadigms: { connect: connectedParadigms.map((paradigm: { id: string }) => ({ id: paradigm.id })) },
         evidence: bottleneck.evidence,
         possibleResolutions: bottleneck.possibleResolutions
       }
