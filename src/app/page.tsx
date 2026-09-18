@@ -37,6 +37,7 @@ const operatingLoops = [
 
 const commandModules = [
   { href: "/ship-check", icon: ShieldCheck, title: "AI Ship Check", body: "Crash-test an AI system, reproduce meaningful failures, trace evidence, generate remediation, and explain readiness limits.", signal: "P0 product" },
+  { href: "/networking", icon: Network, title: "Networking OS", body: "Understand relationship leverage, map access paths, simulate strategy, and turn the next conversation into compounding trust.", signal: "relationship strategy" },
   { href: "/frontier", icon: Radar, title: "Frontier Intelligence", body: "Research-source adapters, credibility heuristics, contradictions, and trend exploration.", signal: "research pipeline" },
   { href: "/emergence-map", icon: Map, title: "Emergence Map", body: "Interactive causal map from raw signals to AGI and ASI, with red weak points and innovation zones.", signal: "AGI path" },
   { href: "/ai-maps", icon: Map, title: "Maps For Each AI", body: "A separate live emergence map for every AI paradigm, showing how that paradigm works and where it gets weak.", signal: "15 maps" },

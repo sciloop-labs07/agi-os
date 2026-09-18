@@ -1,10 +1,11 @@
-import { Activity, Atom, Binary, BrainCircuit, CircleDollarSign, Crown, FlaskConical, GitBranch, LineChart, Map, MessageSquareText, Moon, Network, NotebookTabs, Orbit, Radar, Route, ShieldAlert, Sigma, Sparkles, UserRound, WandSparkles, Workflow, Zap } from "lucide-react";
+import { Activity, Atom, Binary, BrainCircuit, CircleDollarSign, Crown, FlaskConical, GitBranch, LineChart, Map, MessageSquareText, Moon, Network, NotebookTabs, Orbit, Radar, Route, Share2, ShieldAlert, Sigma, Sparkles, UserRound, WandSparkles, Workflow, Zap } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const nav = [
   { href: "/", label: "Command", icon: Orbit },
   { href: "/personal", label: "Personal OS", icon: Activity },
+  { href: "/networking", label: "Networking", icon: Network },
   { href: "/founder-network", label: "Founder Net", icon: Network },
   { href: "/money-universe", label: "Money Universe", icon: CircleDollarSign },
   { href: "/ship-check", label: "AI Ship Check", icon: ShieldAlert },
@@ -30,6 +31,8 @@ const nav = [
   { href: "/architecture", label: "System", icon: Workflow },
   { href: "/feedback", label: "Feedback", icon: MessageSquareText },
   { href: "/premium", label: "Premium", icon: Crown },
+  { href: "/market-fit", label: "Skyloop Market Fit", icon: CircleDollarSign },
+  { href: "/distribution", label: "Distribution", icon: Share2 },
   { href: "/login", label: "Account", icon: UserRound }
 ];
 
